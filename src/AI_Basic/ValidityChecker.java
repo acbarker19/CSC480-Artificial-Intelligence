@@ -11,6 +11,34 @@ package AI_Basic;
  */
 public class ValidityChecker {
     
+    public static String runChecks(String input){
+        String error = null;
+        
+        String[] text = splitText(input);
+        
+        if(text.length == 1 && text[0].isEmpty()){
+            error = "No input detected.";
+        }else if(text.length < 3){
+            error = "Not enough information was input.";
+        }else if(text.length > 3){
+            error = "Too much information was input.";
+        }else{
+            switch(text[0]){
+                case "M&C":
+                    error = mAndC(text);
+                    break;
+                case "8puzzle":
+                    error = eightPuzzle(text);
+                    break;
+                default:
+                    error = "Game does not exist.";
+                    break;
+            }
+        }
+        
+        return error;
+    }
+    
     private static boolean isInteger(String input) {
         try{
             Integer.parseInt(input);
@@ -42,51 +70,31 @@ public class ValidityChecker {
         return input.split("#");
     }
     
-    public static String mAndC(String possible){
+    private static String mAndC(String[] input){
         String error = null;
         
-        String[] text = splitText(possible);
-
-        if(text.length == 1 && text[0].isEmpty()){
-            error = "No input detected.";
-        }else if(text.length < 3){
-            error = "Not enough information was input.";
-        }else if(text.length > 3){
-            error = "Too much information was input.";
-        }else if(!text[0].equals("M&C")){
-            error = "The first data item must be \"M&C\".";
-        }else if(isInteger(text[1]) == false
-                || text[1].length() != 6){
+        if(isInteger(input[1]) == false
+                || input[1].length() != 6){
             error = "The second data item must be an integer with 6 digits.";
-        }else if(isInteger(text[2]) == false
-                || text[2].length() != 6){
+        }else if(isInteger(input[2]) == false
+                || input[2].length() != 6){
             error = "The third data item must be an integer with 6 digits.";
         }
         
         return error;
     }
     
-    public static String eightPuzzle(String possible){
+    private static String eightPuzzle(String[] input){
         String error = null;
         
-        String[] text = splitText(possible);
-
-        if(text.length == 1 && text[0].isEmpty()){
-            error = "No input detected.";
-        }else if(text.length < 3){
-            error = "Not enough information was input.";
-        }else if(text.length > 3){
-            error = "Too much information was input.";
-        }else if(!text[0].equals("8puzzle")){
-            error = "The first data item must be \"8puzzle\".";
-        }else if(isInteger(text[1]) == false
-                || text[1].length() != 9
-                || isZeroToEight(text[1]) == false){
+        if(isInteger(input[1]) == false
+                || input[1].length() != 9
+                || isZeroToEight(input[1]) == false){
             error = "The second data item must be an integer with 9 digits "
                     + "and must contain the numbers 0-8.";
-        }else if(isInteger(text[2]) == false
-                || text[2].length() != 9
-                || isZeroToEight(text[2]) == false){
+        }else if(isInteger(input[2]) == false
+                || input[2].length() != 9
+                || isZeroToEight(input[2]) == false){
             error = "The third data item must be an integer with 9 digits "
                     + "and must contain the numbers 0-8.";
         }

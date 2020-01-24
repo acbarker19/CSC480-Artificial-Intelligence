@@ -29,6 +29,14 @@ public class MainFrame extends javax.swing.JFrame {
                 "Error",
                 JOptionPane.ERROR_MESSAGE);
     }
+    
+    private void displayMessage(String message){
+        JOptionPane.showMessageDialog(null,
+                "<html><body><p style='width: 200px;'>" + message.replace("\n",
+                        "<br>") + "</p></body></html>",
+                "Correct",
+                JOptionPane.PLAIN_MESSAGE);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,30 +47,22 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mcButton = new javax.swing.JButton();
-        eightPuzzleButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         textArea = new javax.swing.JTextArea();
+        enterButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        mcButton.setText("M & C");
-        mcButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mcButtonActionPerformed(evt);
-            }
-        });
-
-        eightPuzzleButton.setText("8 Puzzle");
-        eightPuzzleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eightPuzzleButtonActionPerformed(evt);
-            }
-        });
 
         textArea.setColumns(20);
         textArea.setRows(5);
         jScrollPane1.setViewportView(textArea);
+
+        enterButton.setText("Enter");
+        enterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,9 +73,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(mcButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(eightPuzzleButton)
+                        .addComponent(enterButton)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -83,9 +81,7 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(mcButton)
-                    .addComponent(eightPuzzleButton))
+                .addComponent(enterButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
                 .addContainerGap())
@@ -94,21 +90,15 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void mcButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mcButtonActionPerformed
-        String errorMessage = vc.mAndC(textArea.getText());
+    private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterButtonActionPerformed
+        String errorMessage = vc.runChecks(textArea.getText());
         
         if(errorMessage != null){
             displayError(errorMessage);
+        }else{
+            displayMessage("Input is correct.");
         }
-    }//GEN-LAST:event_mcButtonActionPerformed
-
-    private void eightPuzzleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightPuzzleButtonActionPerformed
-        String errorMessage = vc.eightPuzzle(textArea.getText());
-        
-        if(errorMessage != null){
-            displayError(errorMessage);
-        }
-    }//GEN-LAST:event_eightPuzzleButtonActionPerformed
+    }//GEN-LAST:event_enterButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -146,9 +136,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton eightPuzzleButton;
+    private javax.swing.JButton enterButton;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton mcButton;
     private javax.swing.JTextArea textArea;
     // End of variables declaration//GEN-END:variables
 }
