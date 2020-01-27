@@ -33,7 +33,6 @@ public class Problem {
     public State[] getActions(State currentState){
         State[] possibleStates = new State[0];
         
-        
         return possibleStates;
     }
     
