@@ -47,6 +47,22 @@ public class Sequence {
         }
     }
     
+    public Action getFirst(){
+        try{
+            return actions.get(0);
+        }catch(NullPointerException npe){
+            return null;
+        }
+    }
+    
+    public ArrayList<Action> getRest(){
+        ArrayList<Action> rest = actions;
+        
+        rest.remove(0);
+        
+        return rest;
+    }
+    
     public ArrayList<Action> getList(){
         return actions;
     }

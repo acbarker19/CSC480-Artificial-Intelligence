@@ -27,6 +27,14 @@ public class Problem {
         }
     }
     
+    public State getInitialState(){
+        return initialState;
+    }
+    
+    public State getEndState(){
+        return endState;
+    }
+    
     public static void main(String[] args){
         Problem p = new Problem(new State("331000"),
                 new State("000133"));
@@ -142,6 +150,11 @@ class MAndCProblem extends Problem {
         return endState;
     }
     
+    public String toString(){
+        return "Initial State: " + getInitialState() + ", End State: " +
+                getEndState();
+    }
+    
     public static void main(String[] args){
         MAndCProblem mc = new MAndCProblem(new State("331000"),
                 new State("000133"));
@@ -159,5 +172,8 @@ class MAndCProblem extends Problem {
         System.out.println("Results of action " + newAction + " on state " +
                 mcState + ": " + mc.getResults(mcState, newAction));
         mcState = mc.getResults(mcState, newAction);
+        
+        System.out.println("Initial state: " + mc.getInitialState());
+        System.out.println("End state: " + mc.getEndState());
     }
 }
