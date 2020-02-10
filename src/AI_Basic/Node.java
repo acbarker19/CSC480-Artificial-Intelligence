@@ -59,9 +59,22 @@ public class Node {
         return pathCost;
     }
     
+    public Sequence getSolution(){
+        Sequence solution;
+        
+        if(parentNode != null){
+            solution = new Sequence(parentNode.getSolution().getList());
+        }else{
+            solution = new Sequence();
+        }
+        
+        solution.add(action);
+        return solution;
+    }
+    
     public String toString(){
-        return "State: " + state + ", Parent Node: " + parentNode +
-                ", Action: " + action + ", Path Cost: " + pathCost;
+        return "State: " + state + ", Parent Node: {" + parentNode +
+                "}, Action: " + action + ", Path Cost: " + pathCost;
     }
     
     public static void main(String[] args){
@@ -77,6 +90,7 @@ public class Node {
         System.out.println("theNode.toString(): " + theNode.toString());
         Sequence theSequence = new Sequence(theNode.getAction());
         System.out.println("theSequence.toString(): " + theSequence.toString());
+        System.out.println("theNode.getSolution(): " + theNode.getSolution());
         
         State stateOfChild = new State("220111");
         Action actionOfChild = new Action("row#10");
@@ -88,6 +102,7 @@ public class Node {
         System.out.println("theChildNode.toString(): " + theChildNode.toString());
         theSequence.add(theChildNode.getAction());
         System.out.println("theSequence.toString(): " + theSequence.toString());
+        System.out.println("theChildNode.getSolution(): " + theChildNode.getSolution());
     }
     
 }

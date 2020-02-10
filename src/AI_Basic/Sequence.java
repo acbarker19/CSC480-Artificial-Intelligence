@@ -55,8 +55,12 @@ public class Sequence {
         }
     }
     
-    public ArrayList<Action> getRest(){
-        ArrayList<Action> rest = actions;
+    public void remove(int identifier){
+        actions.remove(identifier);
+    }
+    
+    public Sequence getRest(){
+        Sequence rest = new Sequence(actions);
         
         rest.remove(0);
         
