@@ -20,7 +20,7 @@ public class QueueFIFO {
     }
     
     public boolean isEmpty(){
-        return list.size() == 0;
+        return list.isEmpty();
     }
     
     public Object pop(){
@@ -31,6 +31,11 @@ public class QueueFIFO {
             list.remove(0);
             return theObject;
         }
+    }
+    
+    
+    public boolean contains(Object element){
+        return list.contains(element);
     }
     
     public void insert(Object element){

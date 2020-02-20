@@ -78,15 +78,16 @@ public class Sequence {
     public String toString(){
         String sequence = null;
         
-        if(actions.isEmpty()){
-            sequence = "The sequence is empty.";
-        }else{
+        if(!actions.isEmpty()){
             sequence = "";
+            
             for(int i = 0; i < actions.size(); i++){
-                sequence += actions.get(i).toString();
-                
-                if(i != actions.size() - 1){
-                    sequence += " ";
+                if(actions.get(i) != null){
+                    sequence += actions.get(i).toString();
+
+                    if(i != actions.size() - 1){
+                        sequence += " ";
+                    }
                 }
             }
         }

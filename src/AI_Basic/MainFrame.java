@@ -20,6 +20,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        textArea.setText("M&C#331000#000133");
     }
     
     private void displayError(String error){
@@ -50,6 +51,7 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         textArea = new javax.swing.JTextArea();
         enterButton = new javax.swing.JButton();
+        clearButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,6 +66,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        clearButton.setText("Clear");
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -71,9 +80,11 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(enterButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clearButton)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -81,9 +92,11 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(enterButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(enterButton)
+                    .addComponent(clearButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -91,14 +104,40 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterButtonActionPerformed
-        String errorMessage = vc.runChecks(textArea.getText());
+        String input = textArea.getText();
+            textArea.setText(input + "\r\n\r\n===================");
+        
+        String errorMessage = vc.runChecks(input);
         
         if(errorMessage != null){
             displayError(errorMessage);
         }else{
-            displayMessage("Input is correct.");
+            Agent agent = new Agent(input);
+            
+            Sequence solution = agent.getSolution();
+            
+            String output = textArea.getText() +
+                    "\r\n\r\nNumber of Steps to Get to Solution: " +
+                    (solution.size() - 1) + "\r\n\r\nSteps to Get to Solution:";
+            State currentState = agent.getProblem().getInitialState();
+            
+            for(int i = 0; i < solution.size(); i++){
+                if(solution.get(i) != null){
+                    output += "\r\n" + currentState.toString() +
+                            " + " + solution.get(i).toString() +
+                            " = " + agent.getProblem().getResult(currentState, 
+                                    solution.get(i));
+                    currentState = agent.getProblem().getResult(currentState, 
+                                    solution.get(i));
+                }
+            }
+            textArea.setText(output);
         }
     }//GEN-LAST:event_enterButtonActionPerformed
+
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        textArea.setText("");
+    }//GEN-LAST:event_clearButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -136,6 +175,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton clearButton;
     private javax.swing.JButton enterButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea textArea;

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author acbar
  */
-public class Problem {
+public abstract class Problem {
     private State initialState, endState;
     
     public Problem(State initialState, State endState){
@@ -20,11 +20,7 @@ public class Problem {
     }
     
     public boolean goalTest(State testState){
-        if(testState.toString() == endState.toString()){
-            return true;
-        }else{
-            return false;
-        }
+            return testState.toString().equals(endState.toString());
     }
     
     public State getInitialState(){
@@ -40,13 +36,9 @@ public class Problem {
                 getEndState();
     }
     
-    public static void main(String[] args){
-        Problem p = new Problem(new State("331000"),
-                new State("000133"));
-        
-        System.out.println("Has reached goal with 000133: " +
-                p.goalTest(new State("000133")));
-    }
+    public abstract State getResult(State currentState, Action action);
+    
+    public abstract ArrayList<Action> getNextActions(State currentState);
 }
 
 class MAndCProblem extends Problem {
@@ -79,8 +71,8 @@ class MAndCProblem extends Problem {
         return data;
     }
     
-    public ArrayList<State> getNextActions(State currentState){
-        ArrayList<State> possibleActions = new ArrayList<State>();
+    public ArrayList<Action> getNextActions(State currentState){
+        ArrayList<Action> possibleActions = new ArrayList<Action>();
         final String PREFIX = "row#";
         final int numSpots = 2;
         
@@ -93,13 +85,13 @@ class MAndCProblem extends Problem {
         int mRight = data[4];
         int cRight = data[5];
         
+        ArrayList<Action> temp = new ArrayList<Action>();
+        
         if(bLeft == 1){
             for(int miss = 0; miss <= mLeft; miss++){
                 for(int cann = 0; cann <= cLeft; cann++){
                     if(miss + cann <= numSpots){
-                        possibleActions.add(new State(PREFIX + miss + cann));
-                    }else{
-                        break;
+                        temp.add(new Action(PREFIX + miss + cann));
                     }
                 }
             }
@@ -107,71 +99,94 @@ class MAndCProblem extends Problem {
             for(int miss = 0; miss <= mRight; miss++){
                 for(int cann = 0; cann <= cRight; cann++){
                     if(miss + cann <= numSpots){
-                        possibleActions.add(new State(PREFIX + miss + cann));
-                    }else{
-                        break;
+                        temp.add(new Action(PREFIX + miss + cann));
                     }
                 }
+            }
+        }
+        
+        for(int i = 0; i < temp.size(); i++){
+            if(!(temp.get(i).toString().equals("row#00") ||
+                    getResult(currentState, temp.get(i)).toString().equals("FAILURE"))){
+                possibleActions.add(temp.get(i));
             }
         }
         
         return possibleActions;
     }
     
-    public State getResults(State currentState, Action action){
-        int[] stateData = splitState(currentState);
-        int[] actionData = splitAction(action);
+    public State getResult(State currentState, Action action){
+        State endState = new State("FAILURE");
         
-        int mLeft = stateData[0];
-        int cLeft = stateData[1];
-        int bLeft = stateData[2];
-        int bRight = stateData[3];
-        int mRight = stateData[4];
-        int cRight = stateData[5];
-        
-        if(bLeft == 1){
-            mLeft -= actionData[0];
-            mRight += actionData[0];
+        if(!currentState.toString().equals("FAILURE")){
+            int[] stateData = splitState(currentState);
+            int[] actionData = splitAction(action);
 
-            cLeft -= actionData[1];
-            cRight += actionData[1];
-            
-            bLeft = 0;
-            bRight = 1;
-        }else if(bRight == 1){
-            mLeft += actionData[0];
-            mRight -= actionData[0];
+            int mLeft = stateData[0];
+            int cLeft = stateData[1];
+            int bLeft = stateData[2];
+            int bRight = stateData[3];
+            int mRight = stateData[4];
+            int cRight = stateData[5];
 
-            cLeft += actionData[1];
-            cRight -= actionData[1];
+            if(actionData[0] + actionData[1] <= 2){
+                if(bLeft == 1){
+                    mLeft -= actionData[0];
+                    mRight += actionData[0];
+
+                    cLeft -= actionData[1];
+                    cRight += actionData[1];
+
+                    bLeft = 0;
+                    bRight = 1;
+                }else if(bRight == 1){
+                    mLeft += actionData[0];
+                    mRight -= actionData[0];
+
+                    cLeft += actionData[1];
+                    cRight -= actionData[1];
+
+                    bLeft = 1;
+                    bRight = 0;
+                }
+            }
             
-            bLeft = 1;
-            bRight = 0;
+            String possibleState = "" + mLeft + cLeft + bLeft + bRight +
+                    mRight + cRight;
+            
+            if(mLeft >= cLeft && mRight >= cRight){
+                endState = new State(possibleState);
+            }else if(mRight == 0 && mLeft >= cLeft){
+                endState = new State(possibleState);
+            }else if(mLeft == 0 && mRight >= cRight){
+                endState = new State(possibleState);
+            }
         }
-        
-        State endState = new State("" + mLeft + cLeft + bLeft + bRight +
-                mRight + cRight);
         
         return endState;
     }
     
     public static void main(String[] args){
-        MAndCProblem mc = new MAndCProblem(new State("331000"),
+        State mcState = new State("331000");
+        
+        MAndCProblem mc = new MAndCProblem(mcState,
                 new State("000133"));
         
-        State mcState = new State("251012");
         System.out.println("Has reached goal with " + mcState.toString() +
                 ": " + mc.goalTest(mcState));
         System.out.println("Next Possible Actions: " + mc.getNextActions(mcState));
         
-        Action newAction = new Action("row#13");
+        Action newAction = new Action("row#10");
         System.out.println("Results of action " + newAction + " on state " +
-                mcState + ": " + mc.getResults(mcState, newAction));
-        mcState = mc.getResults(mcState, newAction);
+                mcState + ": " + mc.getResult(mcState, newAction));
+        if(!mc.getResult(mcState, newAction).toString().equals("FAILURE")){
+            mcState = mc.getResult(mcState, newAction);
+        }
         
+        newAction.setAction("row#01");
         System.out.println("Results of action " + newAction + " on state " +
-                mcState + ": " + mc.getResults(mcState, newAction));
-        mcState = mc.getResults(mcState, newAction);
+                mcState + ": " + mc.getResult(mcState, newAction));
+        mcState = mc.getResult(mcState, newAction);
         
         System.out.println("Initial state: " + mc.getInitialState());
         System.out.println("End state: " + mc.getEndState());

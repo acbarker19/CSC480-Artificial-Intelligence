@@ -16,6 +16,7 @@ public class Node {
     private Action action;      // The action that was applied to the parent to generate this node
     private int pathCost;       // The cost - g(n) - of the path from the initial state to the
                                 // node using the parent pointers
+    private Sequence sequence;
     
     public Node(State state,
                  Node parentNode,
@@ -24,6 +25,13 @@ public class Node {
         this.state = state;
         this.parentNode = parentNode;
         this.action = action;
+        this.pathCost = pathCost;
+    }
+    
+    public Node(State state, int pathCost){
+        this.state = state;
+        parentNode = null;
+        action = null;
         this.pathCost = pathCost;
     }
     
@@ -62,13 +70,14 @@ public class Node {
     public Sequence getSolution(){
         Sequence solution;
         
-        if(parentNode != null){
-            solution = new Sequence(parentNode.getSolution().getList());
-        }else{
+        if(parentNode == null){
             solution = new Sequence();
+        }else{
+            solution = parentNode.getSolution();
         }
         
         solution.add(action);
+        
         return solution;
     }
     
@@ -93,7 +102,7 @@ public class Node {
         System.out.println("theNode.getSolution(): " + theNode.getSolution());
         
         State stateOfChild = new State("220111");
-        Action actionOfChild = new Action("row#10");
+        Action actionOfChild = new Action("row#11");
         Node theChildNode = new Node(stateOfChild,
                                  theNode,       // parent node
                                  actionOfChild,

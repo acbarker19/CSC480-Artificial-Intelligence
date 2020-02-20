@@ -17,6 +17,10 @@ public class Action {
         this.data = data;
     }
     
+    public void setAction(String data){
+        this.data = data;
+    }
+    
     public String toString(){
         return data;
     }

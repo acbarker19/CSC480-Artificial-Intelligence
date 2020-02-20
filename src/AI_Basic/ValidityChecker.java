@@ -70,15 +70,37 @@ public class ValidityChecker {
         return input.split("#");
     }
     
+    private static int[] getIntArray(String input){
+        int[] data = new int[input.length()];
+        
+        for(int i = 0; i < input.length(); i++){
+            data[i] = Character.getNumericValue(input.charAt(i));
+        }
+        
+        return data;
+    }
+    
     private static String mAndC(String[] input){
         String error = null;
         
-        if(isInteger(input[1]) == false
-                || input[1].length() != 6){
+        if(isInteger(input[1]) == false ||
+                input[1].length() != 6){
             error = "The second data item must be an integer with 6 digits.";
-        }else if(isInteger(input[2]) == false
-                || input[2].length() != 6){
+        }else if(isInteger(input[2]) == false ||
+                input[2].length() != 6){
             error = "The third data item must be an integer with 6 digits.";
+        }else if(input[1].contains("0010") ||
+                input[1].contains("0100")){
+            error = "The second data item has the boat in an unreachable position.";
+        }else if(input[2].contains("0010") ||
+                input[2].contains("0100")){
+            error = "The third data item has the boat in an unreachable position.";
+        }else if(!((getIntArray(input[1])[2] == 1 && getIntArray(input[1])[3] == 0) ||
+                (getIntArray(input[1])[2] == 0 && getIntArray(input[1])[3] == 1))){
+            error = "The second data item can only have one boat.";
+        }else if(!((getIntArray(input[2])[2] == 1 && getIntArray(input[2])[3] == 0) ||
+                (getIntArray(input[2])[2] == 0 && getIntArray(input[2])[3] == 1))){
+            error = "The third data item can only have one boat.";
         }
         
         return error;
