@@ -24,7 +24,7 @@ public class Agent {
                 problemName = "Missionaries and Cannibals";
                 initialState = new State(text[1]);
                 endState = new State(text[2]);
-                problem = new MAndCProblem(initialState, endState);
+                problem = new ProblemMAndC(initialState, endState);
                 solution = breadthFirstSearch(problem);
                 break;
             case "8puzzle":
@@ -129,8 +129,17 @@ public class Agent {
     }
     
     public static void main(String[] args){
+        System.out.println("Valid Input");
         Agent agent = new Agent("M&C#331000#000133");
-        agent.breadthFirstSearch(agent.getProblem());
+        System.out.println("Solution: " + agent.getSolution().toString());
+        
+        System.out.println("Invalid Input");
+        if(ValidityChecker.runChecks("M&C#331000#000155") != null){
+            System.out.println(ValidityChecker.runChecks("M&C#331000#000155"));
+        }else{
+            agent = new Agent("M&C#331000#000155");
+            System.out.println("Solution: " + agent.getSolution().toString());
+        }
     }
     
 }

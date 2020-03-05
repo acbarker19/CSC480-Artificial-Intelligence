@@ -112,6 +112,18 @@ public class Node {
         theSequence.add(theChildNode.getAction());
         System.out.println("theSequence.toString(): " + theSequence.toString());
         System.out.println("theChildNode.getSolution(): " + theChildNode.getSolution());
+        
+        State stateOfChild2 = new State("331000");
+        Action actionOfChild2 = new Action("row#11");
+        Node theChildNode2 = new Node(stateOfChild2,
+                                 theChildNode,       // parent node
+                                 actionOfChild2,
+                                 1);            // path cost
+        
+        System.out.println("theChildNode2.toString(): " + theChildNode2.toString());
+        theSequence.add(theChildNode2.getAction());
+        System.out.println("theSequence.toString(): " + theSequence.toString());
+        System.out.println("theChildNode2.getSolution(): " + theChildNode2.getSolution());
     }
     
 }

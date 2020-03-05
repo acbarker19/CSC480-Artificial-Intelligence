@@ -98,32 +98,21 @@ public class Sequence {
     public static void main(String[] args){
         System.out.println("Test main for Sequence class");
         
-        Sequence sequence = new Sequence();
+        ArrayList list = new ArrayList();
         Action action = new Action("row#11");
+        list.add(action);
+        action = new Action("row#12");
+        list.add(action);
+        action = new Action("row#21");
+        list.add(action);
+        
+        Sequence sequence = new Sequence(list);
         
         System.out.println("Sequence is empty: " + sequence.isEmpty());
-        System.out.println("Sequence in order: " + sequence.toString());
-        
-        sequence.add(action);
-        System.out.println("Sequence is empty: " + sequence.isEmpty());
-        System.out.println("Sequence #10: " + sequence.get(10));
-        System.out.println("Sequence #0: " + sequence.get(0));
-        
-        Action action2 = new Action("row#10");
-        sequence.add(action2);
-        System.out.println("Sequence in order: " + sequence.toString());
-        
-        ArrayList<Action> actions = new ArrayList<Action>();
-        actions.add(new Action("row#01"));
-        actions.add(new Action("row#10"));
-        actions.add(new Action("row#11"));
-        actions.add(new Action("row#20"));
-        actions.add(new Action("row#02"));
-        
-        Sequence sequence2 = new Sequence(actions);
-        System.out.println("Sequence2 in order: " + sequence2.toString());
-        System.out.println("Sequence2 #3: " + sequence2.get(3));
-        
+        System.out.println("Sequence in order: " + sequence);
+        System.out.println("Sequence.toString(): " + sequence.toString());
+        System.out.println("First in sequence: " + sequence.getFirst());
+        System.out.println("Rest of sequence: " + sequence.getRest());
     }
     
 }

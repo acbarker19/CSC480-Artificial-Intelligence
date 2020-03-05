@@ -13,14 +13,19 @@ import javax.swing.JOptionPane;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    private ValidityChecker vc;
-    
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
-        textArea.setText("M&C#331000#000133");
+        
+        String[] sampleProblems = new String[] {
+            "M&C 1", "M&C 2", "Invalid M&C 1", "Invalid M&C 2"
+        };
+        sampleProblemsComboBox.removeAllItems();
+        for(String sample : sampleProblems){
+            sampleProblemsComboBox.addItem(sample);
+        }
     }
     
     private void displayError(String error){
@@ -52,6 +57,7 @@ public class MainFrame extends javax.swing.JFrame {
         textArea = new javax.swing.JTextArea();
         enterButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
+        sampleProblemsComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,6 +79,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        sampleProblemsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        sampleProblemsComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sampleProblemsComboBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,7 +98,8 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(enterButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clearButton)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(sampleProblemsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -94,7 +108,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(enterButton)
-                    .addComponent(clearButton))
+                    .addComponent(clearButton)
+                    .addComponent(sampleProblemsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                 .addContainerGap())
@@ -105,13 +120,14 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterButtonActionPerformed
         String input = textArea.getText();
-            textArea.setText(input + "\r\n\r\n===================");
         
-        String errorMessage = vc.runChecks(input);
+        String errorMessage = ValidityChecker.runChecks(input);
         
         if(errorMessage != null){
             displayError(errorMessage);
         }else{
+            textArea.setText(input + "\r\n\r\n===================");
+            
             Agent agent = new Agent(input);
             
             Sequence solution = agent.getSolution();
@@ -138,6 +154,27 @@ public class MainFrame extends javax.swing.JFrame {
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         textArea.setText("");
     }//GEN-LAST:event_clearButtonActionPerformed
+
+    private void sampleProblemsComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleProblemsComboBoxActionPerformed
+        String input = (String)sampleProblemsComboBox.getSelectedItem();
+        
+        if(input != null){
+            switch(input){
+                case "M&C 1":
+                    textArea.setText("M&C#331000#000133");
+                    break;
+                case "M&C 2":
+                    textArea.setText("M&C#321001#000133");
+                    break;
+                case "Invalid M&C 1":
+                    textArea.setText("M&C#201013#000133");
+                    break;
+                case "Invalid M&C 2":
+                    textArea.setText("M&C#330100#000133");
+                    break;
+            }
+        }
+    }//GEN-LAST:event_sampleProblemsComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -178,6 +215,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton clearButton;
     private javax.swing.JButton enterButton;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox<String> sampleProblemsComboBox;
     private javax.swing.JTextArea textArea;
     // End of variables declaration//GEN-END:variables
 }

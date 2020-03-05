@@ -82,6 +82,8 @@ public class ValidityChecker {
     
     private static String mAndC(String[] input){
         String error = null;
+        int[] initState = getIntArray(input[1]);
+        int[] endState = getIntArray(input[2]);
         
         if(isInteger(input[1]) == false ||
                 input[1].length() != 6){
@@ -101,6 +103,16 @@ public class ValidityChecker {
         }else if(!((getIntArray(input[2])[2] == 1 && getIntArray(input[2])[3] == 0) ||
                 (getIntArray(input[2])[2] == 0 && getIntArray(input[2])[3] == 1))){
             error = "The third data item can only have one boat.";
+        }else if(initState[0] < initState[1] || initState[4] < initState[5]){
+            error = "The first data item has more cannibals than missionaries.";
+        }else if(endState[0] < endState[1] || endState[4] < endState[5]){
+            error = "The second data item has more cannibals than missionaries.";
+        }else if(initState[0] + initState[4] != endState[0] + endState[4]){
+            error = "The first and second data item do not have an equal "
+                    + "number of missionaries";
+        }else if(initState[1] + initState[5] != endState[1] + endState[5]){
+            error = "The first and second data item do not have an equal "
+                    + "number of cannibals";
         }
         
         return error;
@@ -122,6 +134,13 @@ public class ValidityChecker {
         }
         
         return error;
+    }
+    
+    public static void main(String[] args){
+        System.out.println(ValidityChecker.runChecks("M&C#331000#000133"));
+        System.out.println(ValidityChecker.runChecks("M&C#321001#000133"));
+        System.out.println(ValidityChecker.runChecks("M&C#a#000133"));
+        System.out.println(ValidityChecker.runChecks("M&C#331000#0000133"));
     }
     
 }

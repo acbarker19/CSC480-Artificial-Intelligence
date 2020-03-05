@@ -64,12 +64,13 @@ public class QueueFIFO {
         
         System.out.println("After inserting nodes, theQueue is empty: " +
                 theQueue.isEmpty() + "\r\nThe size of the queue: " +
-                theQueue.size());
+                theQueue.size() + "\r\nThe queue contains: " + theQueue.getList());
         
         object = theQueue.pop();
+        System.out.println("The popped object is: " + object.toString());
         System.out.println("The first node popped from theQueue is: " +
                 object.toString() + "\r\nThe size of the queue: " +
-                theQueue.size());
+                theQueue.size() + "\r\nThe queue contains: " + theQueue.getList());
     }
     
 }
