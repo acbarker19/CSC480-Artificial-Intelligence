@@ -1,16 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * MainFrame.
+ * A GUI frame class that a user can interact with to set the problem for the
+ * agent.
+ * 
+ * @author Alec Barker
  */
 package AI_Basic;
 
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author acbar
- */
 public class MainFrame extends javax.swing.JFrame {
 
     /**
@@ -20,7 +18,9 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         
         String[] sampleProblems = new String[] {
-            "M&C 1", "M&C 2", "Invalid M&C 1", "Invalid M&C 2"
+            "M&C 1", "M&C 2", "Invalid M&C 1", "Invalid M&C 2",
+            "8 Puzzle 1", "8 Puzzle 2", "8 Puzzle 3", "Invalid 8 Puzzle 1",
+            "Invalid 8 Puzzle 2"
         };
         sampleProblemsComboBox.removeAllItems();
         for(String sample : sampleProblems){
@@ -36,14 +36,6 @@ public class MainFrame extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE);
     }
     
-    private void displayMessage(String message){
-        JOptionPane.showMessageDialog(null,
-                "<html><body><p style='width: 200px;'>" + message.replace("\n",
-                        "<br>") + "</p></body></html>",
-                "Correct",
-                JOptionPane.PLAIN_MESSAGE);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -123,6 +115,8 @@ public class MainFrame extends javax.swing.JFrame {
         
         String errorMessage = ValidityChecker.runChecks(input);
         
+        // If the input is incorrect, display error message.
+        // If input returns null, it is correct and runs program.
         if(errorMessage != null){
             displayError(errorMessage);
         }else{
@@ -171,6 +165,21 @@ public class MainFrame extends javax.swing.JFrame {
                     break;
                 case "Invalid M&C 2":
                     textArea.setText("M&C#330100#000133");
+                    break;
+                case "8 Puzzle 1":
+                    textArea.setText("8puzzle#876543210#012345678");
+                    break;
+                case "8 Puzzle 2":
+                    textArea.setText("8puzzle#012345678#102345678");
+                    break;
+                case "8 Puzzle 3":
+                    textArea.setText("8puzzle#012345678#125348607");
+                    break;
+                case "Invalid 8 Puzzle 1":
+                    textArea.setText("8puzzle#012345678#0one2345678");
+                    break;
+                case "Invalid 8 Puzzle 2":
+                    textArea.setText("8puzzle#123456789#192345678");
                     break;
             }
         }

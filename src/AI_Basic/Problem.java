@@ -1,16 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Problem.
+ * A class that sets up generic problem constraints.
+ * 
+ * @author Alec Barker
  */
 package AI_Basic;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author acbar
- */
 public abstract class Problem {
     private State initialState, endState;
     
@@ -29,6 +26,30 @@ public abstract class Problem {
     
     public State getEndState(){
         return endState;
+    }
+    
+    public static int[] splitState(State state){
+        int[] data = new int[state.toString().length()];
+        
+        for(int i = 0; i < state.toString().length(); i++){
+            data[i] = Character.getNumericValue(state.toString().charAt(i));
+        }
+        
+        return data;
+    }
+    
+    public int[] splitAction(Action action){
+        int[] data = new int[2];
+        
+        int actionTypeEnd = action.toString().indexOf("#") + 1;
+        String justNumbers = action.toString().substring(actionTypeEnd,
+                action.toString().length());
+        
+        for(int i = 0; i < 2; i++){
+            data[i] = Character.getNumericValue(justNumbers.charAt(i));
+        }
+        
+        return data;
     }
     
     public String toString(){

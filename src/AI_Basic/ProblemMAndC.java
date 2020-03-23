@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * ProblemMAndC.
+ * A class that sets up the problem constraints for missionaries & cannibals.
+ * 
+ * @author Alec Barker
  */
 package AI_Basic;
 
@@ -13,30 +14,7 @@ class ProblemMAndC extends Problem {
         super(initialState, endState);
     }
     
-    private int[] splitState(State state){
-        int[] data = new int[state.toString().length()];
-        
-        for(int i = 0; i < state.toString().length(); i++){
-            data[i] = Character.getNumericValue(state.toString().charAt(i));
-        }
-        
-        return data;
-    }
-    
-    private int[] splitAction(Action action){
-        int[] data = new int[2];
-        
-        int actionTypeEnd = action.toString().indexOf("#") + 1;
-        String justNumbers = action.toString().substring(actionTypeEnd,
-                action.toString().length());
-        
-        for(int i = 0; i < 2; i++){
-            data[i] = Character.getNumericValue(justNumbers.toString().charAt(i));
-        }
-        
-        return data;
-    }
-    
+    @Override
     public ArrayList<Action> getNextActions(State currentState){
         ArrayList<Action> possibleActions = new ArrayList<Action>();
         final String PREFIX = "row#";
@@ -81,7 +59,12 @@ class ProblemMAndC extends Problem {
         return possibleActions;
     }
     
+    @Override
     public State getResult(State currentState, Action action){
+        if(action == null || action.toString() == null){
+            return currentState;
+        }
+        
         State endState = new State("FAILURE");
         
         if(!currentState.toString().equals("FAILURE")){

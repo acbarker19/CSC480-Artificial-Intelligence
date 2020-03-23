@@ -1,16 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Sequence.
+ * A class that keeps track of the explored information.
+ * 
+ * @author Alec Barker
  */
 package AI_Basic;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author acbar
- */
 public class Sequence {
     private ArrayList<Action> actions;
     

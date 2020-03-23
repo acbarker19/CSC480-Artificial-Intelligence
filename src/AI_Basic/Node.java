@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Node.
+ * A class that keeps track of information relating to each node of the sequence.
+ * 
+ * @author Alec Barker
  */
 package AI_Basic;
 
-/**
- *
- * @author acbar
- */
 public class Node {
     
     private State state;        // The state to which the node corresponds

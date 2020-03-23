@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Agent.
+ * A class that is used to solve problems using input states.
+ * 
+ * @author Alec Barker
  */
 package AI_Basic;
 
-/**
- *
- * @author acbar
- */
 public class Agent {
     
     private String problemName;
@@ -31,6 +28,8 @@ public class Agent {
                 problemName = "8 Puzzle";
                 initialState = new State(text[1]);
                 endState = new State(text[2]);
+                problem = new ProblemEightPuzzle(initialState, endState);
+                solution = breadthFirstSearch(problem);
                 break;
             default:
                 problemName = null;
@@ -140,6 +139,12 @@ public class Agent {
             agent = new Agent("M&C#331000#000155");
             System.out.println("Solution: " + agent.getSolution().toString());
         }
+        
+        agent = new Agent("8puzzle#012345678#102345678");
+        System.out.println("Solution: " + agent.getSolution().toString());
+                
+        agent = new Agent("8puzzle#012345678#125348607");
+        System.out.println("Solution: " + agent.getSolution().toString());
     }
     
 }

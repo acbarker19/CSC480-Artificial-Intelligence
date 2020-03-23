@@ -1,19 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * State.
+ * A class that stores information about states.
+ * 
+ * @author Alec Barker
  */
 package AI_Basic;
 
-/**
- *
- * @author acbar
- */
 public class State {
     
     private String data;
     
     public State(String data){
+        this.data = data;
+    }
+    
+    public void setState(String data){
         this.data = data;
     }
     

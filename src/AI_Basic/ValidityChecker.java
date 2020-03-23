@@ -1,16 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * ValidityChecker.
+ * A class that checks if the user input is in the correct format for each
+ * problem.
+ * 
+ * @author Alec Barker
  */
 package AI_Basic;
 
-/**
- *
- * @author acbar
- */
 public class ValidityChecker {
     
+    // Returns null if there are no errors.
     public static String runChecks(String input){
         String error = null;
         
@@ -103,15 +102,19 @@ public class ValidityChecker {
         }else if(!((getIntArray(input[2])[2] == 1 && getIntArray(input[2])[3] == 0) ||
                 (getIntArray(input[2])[2] == 0 && getIntArray(input[2])[3] == 1))){
             error = "The third data item can only have one boat.";
-        }else if(initState[0] < initState[1] || initState[4] < initState[5]){
-            error = "The first data item has more cannibals than missionaries.";
-        }else if(endState[0] < endState[1] || endState[4] < endState[5]){
-            error = "The second data item has more cannibals than missionaries.";
+        }else if((initState[0] != 0 && initState[0] < initState[1]) ||
+                (initState[4] != 0 && initState[4] < initState[5])){
+            error = "The second data item has more cannibals than missionaries "
+                    + "on one shore.";
+        }else if((endState[0] != 0 && endState[0] < endState[1]) ||
+                (endState[4] != 0 && endState[4] < endState[5])){
+            error = "The third data item has more cannibals than missionaries "
+                    + "on one shore.";
         }else if(initState[0] + initState[4] != endState[0] + endState[4]){
-            error = "The first and second data item do not have an equal "
+            error = "The second and third data items do not have an equal "
                     + "number of missionaries";
         }else if(initState[1] + initState[5] != endState[1] + endState[5]){
-            error = "The first and second data item do not have an equal "
+            error = "The second and third data items do not have an equal "
                     + "number of cannibals";
         }
         

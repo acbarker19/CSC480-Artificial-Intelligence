@@ -1,16 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * QueueFIFO.
+ * A class that keeps track of the frontier information.
+ * 
+ * @author Alec Barker
  */
 package AI_Basic;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author acbar
- */
 public class QueueFIFO {
     
     private ArrayList<Object> list;
@@ -32,7 +29,6 @@ public class QueueFIFO {
             return theObject;
         }
     }
-    
     
     public boolean contains(Object element){
         return list.contains(element);
