@@ -7,6 +7,11 @@
  */
 package AI_Basic;
 
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.JOptionPane;
 
 public class MainFrame extends javax.swing.JFrame {
@@ -16,6 +21,8 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        
+        textArea.setFont(new Font("Courier New", Font.PLAIN, 16));
         
         String[] sampleProblems = new String[] {
             "M&C 1", "M&C 2", "Invalid M&C 1", "Invalid M&C 2",
@@ -27,6 +34,48 @@ public class MainFrame extends javax.swing.JFrame {
         for(String sample : sampleProblems){
             sampleProblemsComboBox.addItem(sample);
         }
+        
+        String[] ticTacToeActions = new String[] {
+            "Top Left", "Top Center", "Top Right",
+            "Middle Left", "Middle Center", "Middle Right",
+            "Bottom Left", "Bottom Center", "Bottom Right"
+        };
+        ticTacToeComboBox.removeAllItems();
+        for(String action : ticTacToeActions){
+            ticTacToeComboBox.addItem(action);
+        }
+        
+        ticTacToeComboBox.setEnabled(false);
+        ticTacToeSubmitButton.setEnabled(false);
+        
+        ticTacToeCheckbox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(ticTacToeCheckbox.isSelected()){
+                    textArea.setEnabled(false);
+                    enterButton.setEnabled(false);
+                    clearButton.setEnabled(false);
+                    sampleProblemsComboBox.setEnabled(false);
+                    ticTacToeComboBox.setEnabled(true);
+                    ticTacToeSubmitButton.setEnabled(true);
+                    
+                    // if new game
+                    if(textArea.getText().startsWith("TIC-TAC-TOE") == false){
+                        ticTacToeComboBox.removeAllItems();
+                        for(String action : ticTacToeActions){
+                            ticTacToeComboBox.addItem(action);
+                        }
+                    }
+                }else{
+                    textArea.setEnabled(true);
+                    enterButton.setEnabled(true);
+                    clearButton.setEnabled(true);
+                    sampleProblemsComboBox.setEnabled(true);
+                    ticTacToeComboBox.setEnabled(false);
+                    ticTacToeSubmitButton.setEnabled(false);
+                }
+            }
+          });
     }
     
     private void displayError(String error){
@@ -51,6 +100,10 @@ public class MainFrame extends javax.swing.JFrame {
         enterButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
         sampleProblemsComboBox = new javax.swing.JComboBox<>();
+        ticTacToeCheckbox = new javax.swing.JCheckBox();
+        jLabel1 = new javax.swing.JLabel();
+        ticTacToeComboBox = new javax.swing.JComboBox<>();
+        ticTacToeSubmitButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,21 +132,40 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        ticTacToeCheckbox.setText("Tic-Tac-Toe");
+
+        jLabel1.setText("Your Move:");
+
+        ticTacToeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        ticTacToeSubmitButton.setText("Submit");
+        ticTacToeSubmitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ticTacToeSubmitButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(enterButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clearButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(sampleProblemsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(ticTacToeCheckbox)
+                    .addComponent(jLabel1)
+                    .addComponent(ticTacToeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ticTacToeSubmitButton, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,7 +176,17 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(clearButton)
                     .addComponent(sampleProblemsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(ticTacToeCheckbox)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ticTacToeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ticTacToeSubmitButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -252,6 +334,68 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_sampleProblemsComboBoxActionPerformed
 
+    private void ticTacToeSubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ticTacToeSubmitButtonActionPerformed
+        ProblemTicTacToe pttt;
+        String currentState;
+        
+        // if game is already in progress
+        if(textArea.getText().startsWith("TIC-TAC-TOE")){
+            currentState = textArea.getText().substring(11, 20);
+        }
+        //if new game
+        else{
+            currentState = "---------";
+        }
+        
+        pttt = new ProblemTicTacToe(new State(currentState));
+        
+        Action playerAction;
+        switch (ticTacToeComboBox.getSelectedItem().toString()) {
+            case "Top Left":
+                playerAction = new Action("0 0");
+                break;
+            case "Top Center":
+                playerAction = new Action("1 0");
+                break;
+            case "Top Right":
+                playerAction = new Action("2 0");
+                break;
+            case "Middle Left":
+                playerAction = new Action("0 1");
+                break;
+            case "Middle Center":
+                playerAction = new Action("1 1");
+                break;
+            case "Middle Right":
+                playerAction = new Action("2 1");
+                break;
+            case "Bottom Left":
+                playerAction = new Action("0 2");
+                break;
+            case "Bottom Center":
+                playerAction = new Action("1 2");
+                break;
+            case "Bottom Right":
+                playerAction = new Action("2 2");
+                break;
+            default:
+                playerAction = new Action("NO ACTION");
+                break;
+        }
+        
+        State playerState = pttt.getResult(pttt.getInitialState(), playerAction);
+        
+        Action bestAction = pttt.minimax(playerState);
+        State newState = pttt.getResult(playerState, bestAction);
+        
+        String row1 = newState.toString().substring(0, 3);
+        String row2 = newState.toString().substring(3, 6);
+        String row3 = newState.toString().substring(6, 9);
+        
+        textArea.setText("TIC-TAC-TOE\n" + newState.toString() + "\n\n" + row1 +
+                "\n" + row2 + "\n" + row3);
+    }//GEN-LAST:event_ticTacToeSubmitButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -290,8 +434,12 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearButton;
     private javax.swing.JButton enterButton;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> sampleProblemsComboBox;
     private javax.swing.JTextArea textArea;
+    private javax.swing.JCheckBox ticTacToeCheckbox;
+    private javax.swing.JComboBox<String> ticTacToeComboBox;
+    private javax.swing.JButton ticTacToeSubmitButton;
     // End of variables declaration//GEN-END:variables
 }
