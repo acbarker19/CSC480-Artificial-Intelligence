@@ -115,6 +115,11 @@ class ProblemMAndC extends Problem {
         return endState;
     }
     
+    @Override
+    public int getPathCost(State state, Action action) {
+        return 1;
+    }
+    
     public static void main(String[] args){
         State mcState = new State("331000");
         

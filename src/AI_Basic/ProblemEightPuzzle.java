@@ -135,6 +135,11 @@ public class ProblemEightPuzzle extends Problem{
         return possibleActions;
     }
     
+    @Override
+    public int getPathCost(State state, Action action) {
+        return 1;
+    }
+    
     public static void main(String[] args){
         State eightPuzzleState = new State("103425678");
         

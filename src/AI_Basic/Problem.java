@@ -57,6 +57,8 @@ public abstract class Problem {
                 getEndState();
     }
     
+    public abstract int getPathCost(State state, Action action);
+    
     public abstract State getResult(State currentState, Action action);
     
     public abstract ArrayList<Action> getNextActions(State currentState);

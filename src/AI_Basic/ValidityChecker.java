@@ -7,6 +7,8 @@
  */
 package AI_Basic;
 
+import java.util.ArrayList;
+
 public class ValidityChecker {
     
     // Returns null if there are no errors.
@@ -17,10 +19,6 @@ public class ValidityChecker {
         
         if(text.length == 1 && text[0].isEmpty()){
             error = "No input detected.";
-        }else if(text.length < 3){
-            error = "Not enough information was input.";
-        }else if(text.length > 3){
-            error = "Too much information was input.";
         }else{
             switch(text[0]){
                 case "M&C":
@@ -28,6 +26,9 @@ public class ValidityChecker {
                     break;
                 case "8puzzle":
                     error = eightPuzzle(text);
+                    break;
+                case "Route":
+                    error = routeFinder(text);
                     break;
                 default:
                     error = "Game does not exist.";
@@ -84,7 +85,11 @@ public class ValidityChecker {
         int[] initState = getIntArray(input[1]);
         int[] endState = getIntArray(input[2]);
         
-        if(isInteger(input[1]) == false ||
+        if(input.length < 3){
+            error = "Not enough information was input.";
+        }else if(input.length > 3){
+            error = "Too much information was input.";
+        }else if(isInteger(input[1]) == false ||
                 input[1].length() != 6){
             error = "The second data item must be an integer with 6 digits.";
         }else if(isInteger(input[2]) == false ||
@@ -124,7 +129,11 @@ public class ValidityChecker {
     private static String eightPuzzle(String[] input){
         String error = null;
         
-        if(isInteger(input[1]) == false
+        if(input.length < 3){
+            error = "Not enough information was input.";
+        }else if(input.length > 3){
+            error = "Too much information was input.";
+        }else if(isInteger(input[1]) == false
                 || input[1].length() != 9
                 || isZeroToEight(input[1]) == false){
             error = "The second data item must be an integer with 9 digits "
@@ -134,6 +143,44 @@ public class ValidityChecker {
                 || isZeroToEight(input[2]) == false){
             error = "The third data item must be an integer with 9 digits "
                     + "and must contain the numbers 0-8.";
+        }
+        
+        return error;
+    }
+    
+    private static String routeFinder(String[] input){
+        String error = null;
+        
+        if(input.length < 4){
+            error = "Not enough information was input.";
+        }else if(input.length > 4){
+            error = "Too much information was input.";
+        }else if(input[1].contains(" ")){
+            error = "The second data item can't contain spaces.";
+        }else if(input[2].contains(" ")){
+            error = "The third data item can't contain spaces.";
+        }else if(!input[3].contains("\n" + input[1] + " ") &&
+                !input[3].contains(" " + input[1] + "\n")){
+            error = "The second data item must be part of a route in the "
+                    + "fourth data item.";
+        }else if(!input[3].contains("\n" + input[2] + " ") &&
+                !input[3].contains(" " + input[2] + "\n")){
+            error = "The third data item must be part of a route in the "
+                    + "fourth data item.";
+        }else{
+            String[] paths = input[3].split("\n");
+            for(String path : paths){
+                String[] route = path.split(" ");
+                if(isInteger(route[1]) == false || route.length != 3){
+                    error = "Every route in the fourth data item must be "
+                            + "written as \"City-1 Distance City-2\", where "
+                            + "Distance is an integer value. Each route should "
+                            + "be on its own line except for the first one, "
+                            + "which should be on the same line as the first "
+                            + "three data items.";
+                    break;
+                }
+            }
         }
         
         return error;

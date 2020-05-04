@@ -12,24 +12,35 @@ public class Agent {
     private State initialState, endState;
     private Problem problem;
     private Sequence solution;
+    private boolean consoleMessagesOn;
     
     public Agent(String data){
-        String[] text = data.split("#");
+        consoleMessagesOn = true;
         
+        String[] text = data.split("#");
         switch(text[0]){
             case "M&C":
                 problemName = "Missionaries and Cannibals";
                 initialState = new State(text[1]);
                 endState = new State(text[2]);
                 problem = new ProblemMAndC(initialState, endState);
-                solution = breadthFirstSearch(problem);
+                solution = breadthFirstSearch(problem, "Least Steps");
                 break;
             case "8puzzle":
                 problemName = "8 Puzzle";
                 initialState = new State(text[1]);
                 endState = new State(text[2]);
                 problem = new ProblemEightPuzzle(initialState, endState);
-                solution = breadthFirstSearch(problem);
+                solution = breadthFirstSearch(problem, "Least Steps");
+                break;
+            case "Route":
+                problemName = "Route Finder";
+                initialState = new State(text[1]);
+                endState = new State(text[2]);
+                String routeString = text[3];
+                problem = new ProblemRouteFinder(initialState, endState,
+                        routeString);
+                solution = breadthFirstSearch(problem, "Shortest Path");
                 break;
             default:
                 problemName = null;
@@ -79,10 +90,12 @@ public class Agent {
 */    
     private Node childNode(Problem problem, Node parent, Action action){
         State state = problem.getResult(parent.getState(), action);
-        return new Node(state, parent, action, 1);
+        int pathCost = parent.getPathCost() +
+                problem.getPathCost(parent.getState(), action);
+        return new Node(state, parent, action, pathCost);
     }
     
-    private Sequence breadthFirstSearch(Problem problem){
+    private Sequence breadthFirstSearch(Problem problem, String searchType){
         Node node = new Node(problem.getInitialState(), 0);
         
         if(problem.goalTest(node.getState())){
@@ -101,21 +114,35 @@ public class Agent {
                 return null;
             }
 
-            node = (Node)frontier.pop();
-            explored.insert(node.getState());
+            node = frontier.pop();
+            explored.insert(node);
             
-            System.out.println("#" + count + ". CURRENT STATE: " + node.getState());
+            if(consoleMessagesOn){
+                System.out.println("#" + count + ". CURRENT STATE: " +
+                        node.getState());
+            }
             
             for(Action action : problem.getNextActions(node.getState())){
                 Node child = childNode(problem, node, action);
+                
+                if(searchType.equals("Shortest Path")){
+                    frontier.replaceNodeWithSmallestPathCost(child);
+                }
+                
                 if(!explored.contains(child.getState()) ||
                         !frontier.contains(child.getState())){
-                    System.out.println("\tPOSSIBLE ACTION: " +
-                            action.toString() + "   RESULT OF ACTION: " +
-                            problem.getResult(node.getState(), action));
+                    
+                    if(consoleMessagesOn){
+                        System.out.println("\tPOSSIBLE ACTION: " +
+                                action.toString() + "   RESULT OF ACTION: " +
+                                problem.getResult(node.getState(), action));
+                    }
                     
                     if(problem.goalTest(child.getState())){
-                        System.out.println("--SOLUTION FOUND--");
+                        if(consoleMessagesOn){
+                            System.out.println("--SOLUTION FOUND--");
+                        }
+                        
                         return child.getSolution();
                     }
                     

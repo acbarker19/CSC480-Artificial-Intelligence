@@ -19,8 +19,9 @@ public class MainFrame extends javax.swing.JFrame {
         
         String[] sampleProblems = new String[] {
             "M&C 1", "M&C 2", "Invalid M&C 1", "Invalid M&C 2",
-            "8 Puzzle 1", "8 Puzzle 2", "8 Puzzle 3", "Invalid 8 Puzzle 1",
-            "Invalid 8 Puzzle 2"
+            "8 Puzzle 1", "8 Puzzle 2", "Invalid 8 Puzzle 1",
+            "Invalid 8 Puzzle 2", "Route Finder 1", "Route Finder 2",
+            "Invalid Route Finder 1", "Invalid Route Finder 2"
         };
         sampleProblemsComboBox.removeAllItems();
         for(String sample : sampleProblems){
@@ -91,7 +92,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clearButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(sampleProblemsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(sampleProblemsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -129,14 +130,19 @@ public class MainFrame extends javax.swing.JFrame {
             String output = textArea.getText() +
                     "\r\n\r\nNumber of Steps to Get to Solution: " +
                     (solution.size() - 1) + "\r\n\r\nSteps to Get to Solution:";
-            State currentState = agent.getProblem().getInitialState();
             
+            State currentState = agent.getProblem().getInitialState();
             for(int i = 0; i < solution.size(); i++){
                 if(solution.get(i) != null){
                     output += "\r\n" + currentState.toString() +
                             " + " + solution.get(i).toString() +
                             " = " + agent.getProblem().getResult(currentState, 
                                     solution.get(i));
+                    if(agent.getProblemName().equals("Route Finder")){
+                        output += "\tDistance: " +
+                                agent.getProblem().getPathCost(
+                                        currentState, solution.get(i));
+                    }
                     currentState = agent.getProblem().getResult(currentState, 
                                     solution.get(i));
                 }
@@ -167,12 +173,9 @@ public class MainFrame extends javax.swing.JFrame {
                     textArea.setText("M&C#330100#000133");
                     break;
                 case "8 Puzzle 1":
-                    textArea.setText("8puzzle#876543210#012345678");
-                    break;
-                case "8 Puzzle 2":
                     textArea.setText("8puzzle#012345678#102345678");
                     break;
-                case "8 Puzzle 3":
+                case "8 Puzzle 2":
                     textArea.setText("8puzzle#012345678#125348607");
                     break;
                 case "Invalid 8 Puzzle 1":
@@ -180,6 +183,70 @@ public class MainFrame extends javax.swing.JFrame {
                     break;
                 case "Invalid 8 Puzzle 2":
                     textArea.setText("8puzzle#123456789#192345678");
+                    break;
+                case "Route Finder 1":
+                    textArea.setText("Route#Arad#Oradea#Oradea 71 Zerind\n"
+                            + "Oradea 151 Sibiu\n"
+                            + "Zerind 75 Arad\n"
+                            + "Arad 140 Sibiu\n"
+                            + "Arad 118 Timisoara\n"
+                            + "Timisoara 111 Lugoj\n"
+                            + "Lugoj 70 Mehadia\n"
+                            + "Mehadia 75 Drobeta\n"
+                            + "Drobeta 120 Craiova\n"
+                            + "Craiova 146 Rimnicu_Vilcea\n"
+                            + "Rimnicu_Vilcea 80 Sibiu\n"
+                            + "Craiova 138 Pitesti\n"
+                            + "Pitesti 97 Rimnicu_Vilcea\n"
+                            + "Pitesti 101 Bucharest\n"
+                            + "Sibiu 99 Fagaras\n"
+                            + "Fagaras 211 Bucharest\n"
+                            + "Bucharest 90 Giurgiu\n"
+                            + "Bucharest 85 Urziceni\n"
+                            + "Urziceni 98 Hirsova\n"
+                            + "Hirsova 86 Eforie\n"
+                            + "Urziceni 142 Vaslui\n"
+                            + "Vaslui 92 Iasi\n"
+                            + "Iasi 87 Neamt");
+                    break;
+                case "Route Finder 2":
+                    textArea.setText("Route#A#Z#A 1 B\n"
+                            + "B 1 C\n"
+                            + "C 1 Z\n"
+                            + "C 1 D\n"
+                            + "A 100 Z");
+                    break;
+                case "Invalid Route Finder 1":
+                    textArea.setText("Route#Cleveland#Oradea#Oradea 71 Zerind\n"
+                            + "Oradea 151 Sibiu\n"
+                            + "Zerind 75 Arad\n"
+                            + "Arad 140 Sibiu\n"
+                            + "Arad 118 Timisoara\n"
+                            + "Timisoara 111 Lugoj\n"
+                            + "Lugoj 70 Mehadia\n"
+                            + "Mehadia 75 Drobeta\n"
+                            + "Drobeta 120 Craiova\n"
+                            + "Craiova 146 Rimnicu_Vilcea\n"
+                            + "Rimnicu_Vilcea 80 Sibiu\n"
+                            + "Craiova 138 Pitesti\n"
+                            + "Pitesti 97 Rimnicu_Vilcea\n"
+                            + "Pitesti 101 Bucharest\n"
+                            + "Sibiu 99 Fagaras\n"
+                            + "Fagaras 211 Bucharest\n"
+                            + "Bucharest 90 Giurgiu\n"
+                            + "Bucharest 85 Urziceni\n"
+                            + "Urziceni 98 Hirsova\n"
+                            + "Hirsova 86 Eforie\n"
+                            + "Urziceni 142 Vaslui\n"
+                            + "Vaslui 92 Iasi\n"
+                            + "Iasi 87 Neamt");
+                    break;
+                case "Invalid Route Finder 2":
+                    textArea.setText("Route#A#Z#A 1 B\n"
+                            + "B 1 C Z\n"
+                            + "C 1 Z\n"
+                            + "C 1 D\n"
+                            + "A 100 Z");
                     break;
             }
         }
