@@ -383,17 +383,40 @@ public class MainFrame extends javax.swing.JFrame {
                 break;
         }
         
+        String row1;
+        String row2;
+        String row3;
+        
         State playerState = pttt.getResult(pttt.getInitialState(), playerAction);
+        State displayState;
         
-        Action bestAction = pttt.minimax(playerState);
-        State newState = pttt.getResult(playerState, bestAction);
+        String winner = "None";
         
-        String row1 = newState.toString().substring(0, 3);
-        String row2 = newState.toString().substring(3, 6);
-        String row3 = newState.toString().substring(6, 9);
+        if(pttt.goalTest(playerState)){
+            row1 = playerState.toString().substring(0, 3);
+            row2 = playerState.toString().substring(3, 6);
+            row3 = playerState.toString().substring(6, 9);
+            
+            displayState = playerState;
+            winner = "Player";
+        }else{
+            Action bestAction = pttt.minimax(playerState);
+            State newState = pttt.getResult(playerState, bestAction);
+
+            row1 = newState.toString().substring(0, 3);
+            row2 = newState.toString().substring(3, 6);
+            row3 = newState.toString().substring(6, 9);
+            
+            displayState = newState;
+            
+            if(pttt.goalTest(newState)){
+                winner = "Computer";
+            }
+        }
         
-        textArea.setText("TIC-TAC-TOE\n" + newState.toString() + "\n\n" + row1 +
-                "\n" + row2 + "\n" + row3);
+        textArea.setText("TIC-TAC-TOE\n" + displayState.toString().trim() +
+                "\n\n" + row1.trim() + "\n" + row2.trim() + "\n" +
+                row3.trim() + "\n\nWinner: " + winner);
     }//GEN-LAST:event_ticTacToeSubmitButtonActionPerformed
 
     /**

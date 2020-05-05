@@ -221,7 +221,7 @@ public class ProblemTicTacToe extends Problem {
     @Override
     public State getResult(State currentState, Action action) {
         State state = new State("INVALID ACTION");
-        
+        System.out.println(currentState.toString() + " " + action.toString());
         int column = Integer.parseInt(action.toString().substring(0, 1));
         int row = Integer.parseInt(action.toString().substring(2, 3));
         
