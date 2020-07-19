@@ -1,4 +1,4 @@
-# CSC480-Artificial-Intelligence
+# CSC480: Artificial Intelligence
 A repository containing projects created in my artificial intelligence class (CSC 480) at the University of Mount Union that was taught by Dr. James Klayder.
 
 ## Completed Features
